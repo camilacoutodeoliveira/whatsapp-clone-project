@@ -36,7 +36,7 @@ a,abbr,acronym,address,applet,article,aside,audio,b,big,blockquote,body,canvas,c
     border:0;
     font:inherit;
     vertical-align:baseline;
-    outline:0
+    outline:0;
 }
 .matched-text,strong{
     font-weight:700
@@ -3739,7 +3739,7 @@ html[dir=rtl] ._3sdhb .C28xL ._1BC4w{
     display:-webkit-flex
 }
 ._1WliW,._3XpR2,._3zJZ2{
-    position:relative
+    position:relative;
 }
 html[dir] ._1GX8_{
     background-color:#e5ddd5
@@ -14782,8 +14782,8 @@ html[dir] .r4crx ._2GgBs{
 }
 .r4crx ._3m_5X{
     z-index:2;
-    height:100%;
-    margin: 0 auto;
+    height: 100%;
+    margin: auto;
 }
 ._2k1om{
     -webkit-flex:1;
@@ -16135,4 +16135,13 @@ html[dir=rtl] ._2ICcy:after{
 }
 #main {
     display:none;
+}
+._2oKVP{
+   display: flex;
+   justify-content: center; 
+}
+#picture-camera{
+    height: 100;
+    width: auto;
+    text-align: center;
 }
