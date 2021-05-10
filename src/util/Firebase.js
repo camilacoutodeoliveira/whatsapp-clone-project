@@ -1,6 +1,9 @@
-// const firebase = require('firebase/app');
-import {firebase} from "firebase";
-require('firebase/firestore');
+// import {firebase} from "firebase/app";
+// import "firebase/auth";
+// import "firebase/firestore";
+
+import * as firebase from 'firebase';
+import * as firestore from 'firebase/firestore';
 
 export class Firebase {
     constructor() {
@@ -32,4 +35,23 @@ export class Firebase {
     static hd() {
         return firebase.storage();
     }
+
+    initAuth() {
+        return new Promise((s, f) => {
+            let provider = new firebase.auth.GoogleAuthProvider();
+            firebase.auth().signInWithPopup(provider)
+                .then(result => {
+                    let token = result.credential.accessToken;
+                    let user = result.user;
+                    s({
+                        user, token
+                    });
+                })
+                .catch(err => {
+                    f(err);
+                });
+        });
+    }
+
+
 }

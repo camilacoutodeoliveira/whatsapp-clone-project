@@ -10,14 +10,26 @@ import {
 import {
     DocumentPreviewController
 } from './DocumentPreviewController';
-import {Firebase} from './../util/Firebase';
+import {
+    Firebase
+} from './../util/Firebase';
 
 export class WhatsAppController {
     constructor() {
+        this._firebase = new Firebase();
+        this.initAuth();
         this.elementsPrototype();
         this.loadElements();
         this.initEvents();
-        this._firebase = new Firebase();
+    }
+
+    initAuth() {
+        this._firebase.initAuth()
+            .then(response => {
+                console.log('response', response);
+            }).catch(error => {
+                console.log('err', error);
+            });
     }
 
     loadElements() {
