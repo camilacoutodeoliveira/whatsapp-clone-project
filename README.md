@@ -38,10 +38,3 @@ npm run start
 npm install pdfjs-dist@2.0.489 --save
 
 npm install firebase@ --save
-npm install firebase@4.13.1 --save
-
-
-npm uninstall firebase
-npm cache clear
-npm i firebase@^4.8.0 --save
-npm i firebase@^4.13.1 --save

@@ -19,7 +19,7 @@
   },
   "homepage": "https://github.com/camilacoutodeoliveira/project-whatsapp-clone#readme",
   "dependencies": {
-    "firebase": "^4.8.0",
+    "firebase": "^8.6.1",
     "pdfjs-dist": "^2.0.489",
     "webpack": "^3.1.0",
     "webpack-dev-server": "^2.5.1"

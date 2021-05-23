@@ -1,13 +1,20 @@
-// import {firebase} from "firebase/app";
-// import "firebase/auth";
-// import "firebase/firestore";
+// import * as firebase from 'firebase'
+// import * as firestore from 'firebase/firestore'
 
-import * as firebase from 'firebase';
-import * as firestore from 'firebase/firestore';
+
+const firebase = require("firebase/app").default;
+
+
+import "firebase/auth";
+import "firebase/firestore";
+import "firebase/storage";
+
+
+// const firebase = require('firebase/app');
+// require('firebase/firestore');
 
 export class Firebase {
     constructor() {
-        this.init();
         this._config = {
             apiKey: "AIzaSyDMpVZOO6fuD8sWf5-nCXOShVz60Ac8P1U",
             authDomain: "whatsapp-clone-6f540.firebaseapp.com",
@@ -16,15 +23,14 @@ export class Firebase {
             messagingSenderId: "64547458557",
             appId: "1:64547458557:web:a250e0c9a89863218cdd94"
         };
+        this.init();
     }
     init() {
         // Your web app's Firebase configuration
-        if (!this._initialized) {
+        if (!window._initializedFirebase) {
             firebase.initializeApp(this._config);
-            firebase.firestore().settings({
-                timestampsInSnapshots: true
-            })
-            this._initialized = true;
+            firebase.firestore().settings({});
+            window._initializedFirebase = true;
         }
     }
 
@@ -44,7 +50,8 @@ export class Firebase {
                     let token = result.credential.accessToken;
                     let user = result.user;
                     s({
-                        user, token
+                        user,
+                        token
                     });
                 })
                 .catch(err => {
