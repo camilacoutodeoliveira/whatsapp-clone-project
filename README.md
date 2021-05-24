@@ -38,3 +38,13 @@ npm run start
 npm install pdfjs-dist@2.0.489 --save
 
 npm install firebase@ --save
+
+//Class 159, required upgrade firebase
+
+npm install -g firebase-tools
+
+firebase login
+
+firebase init functions
+
+firebase deploy --only functions

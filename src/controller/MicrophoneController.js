@@ -49,29 +49,18 @@ export class MicrophoneController extends ClassEvent {
                 let blob = new Blob(this._recordedChunks, {
                     type: this._mimeType
                 });
-                let cx = new AudioContext();
+                let audioContext = new AudioContext();
                 var fileReader = new FileReader();
                 fileReader.onload = e => {
-                    cx.decodeAudioData(fileReader.result).then(decode => {
+                    audioContext.decodeAudioData(fileReader.result).then(decode => {
                         let file = new File([blob], 'rec' + new Date().getTime() + '.webm', {
                             type: this._mimeType,
                             lastModified: Date.now()
                         });
-                        console.log('file', file);
-                        //tocar o arquivo
-                        // let reader = new FileReader();
-                        // reader.onload = e => {
-                        //     console.log('reader file', file);
-                        //     let audio = new Audio(reader.result);
-                        //     audio.play();
-                        // }
-                        // reader.readAsDataURL(file);
-
-
                         this.trigger('recorded', file, decode);
                     });
                 };
-                // fileReader.readAsArrayBuffer(blob);
+                fileReader.readAsArrayBuffer(blob);
             });
             this._mediaRecorder.start();
         }

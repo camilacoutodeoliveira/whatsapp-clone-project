@@ -87,6 +87,27 @@ export class Message extends Model {
         return this._data.from = value;
     }
 
+    get info() {
+        return this._data.info;
+    }
+    set info(value) {
+        return this._data.info = value;
+    }
+
+    get photo() {
+        return this._data.photo;
+    }
+    set photo(value) {
+        return this._data.photo = value;
+    }
+
+    get duration() {
+        return this._data.duration;
+    }
+    set duration(value) {
+        return this._data.duration = value;
+    }
+
     //#endregion
 
     getViewElement(me = true) {
@@ -97,7 +118,7 @@ export class Message extends Model {
 
             case 'contact':
                 div.innerHTML = `
-                    <div class="_3_7SH kNKwo tail">
+                    <div class="_3_7SH kNKwo tail" id="_${this.id}">
                         <span class="tail-container"></span>
                         <span class="tail-container highlight"></span>
                         <div class="_1YNgi copyable-text">
@@ -135,7 +156,7 @@ export class Message extends Model {
 
                 if (this.content.photo) {
 
-                    let img = element.querySelector('.photo-contact-sended');
+                    let img = div.querySelector('.photo-contact-sended');
                     img.src = this.content.photo;
                     img.show();
 
@@ -145,7 +166,7 @@ export class Message extends Model {
 
             case 'document':
                 div.innerHTML = `
-                    <div class="_3_7SH _1ZPgd">
+                    <div class="_3_7SH _1ZPgd" id="_${this.id}">
                             <div class="_1fnMt _2CORf">
                                 <a class="_1vKRe" href="#">
                                     <div class="_2jTyA" style="background-image: url(${this.preview})"></div>
@@ -282,7 +303,7 @@ export class Message extends Model {
 
             case 'audio':
                 div.innerHTML = `
-                    <div class="_3_7SH _17oKL">
+                    <div class="_3_7SH _17oKL" id="_${this.id}">
                         <div class="_2N_Df LKbsn">
                             <div class="_2jfIu">
                                 <div class="_2cfqh">
@@ -361,48 +382,39 @@ export class Message extends Model {
                 `;
 
                 if (this.photo) {
-
-                    let img = element.querySelector('.message-photo');
+                    let img = div.querySelector('.message-photo');
                     img.src = this.photo;
                     img.show();
-
                 }
 
-                let audio = element.querySelector('audio');
-                let btnPlay = element.querySelector('.audio-play');
-                let btnPause = element.querySelector('.audio-pause');
-                let inputRange = element.querySelector('[type="range"]');
+                let audio = div.querySelector('audio');
+                let btnPlay = div.querySelector('.audio-play');
+                let btnPause = div.querySelector('.audio-pause');
+                let inputRange = div.querySelector('[type="range"]');
 
-                element.querySelector('.message-audio-duration').innerHTML = Format.toTime(this.duration * 1000);
+                div.querySelector('.message-audio-duration').innerHTML = Format.toTime(this.duration * 1000);
 
                 audio.onloadeddata = e => {
-
-                    element.querySelector('.audio-load').hide();
+                    div.querySelector('.audio-load').hide();
                     btnPlay.show();
-
                 }
 
                 audio.onplay = e => {
-
                     btnPlay.hide();
                     btnPause.show();
-
                 }
 
                 audio.onpause = e => {
-
-                    element.querySelector('.message-audio-duration').innerHTML = Format.toTime(this.duration * 1000);
+                    div.querySelector('.message-audio-duration').innerHTML = Format.toTime(this.duration * 1000);
                     btnPlay.show();
                     btnPause.hide();
-
                 }
 
                 audio.ontimeupdate = e => {
-
                     btnPlay.hide();
                     btnPause.hide();
 
-                    element.querySelector('.message-audio-duration').innerHTML = Format.toTime(audio.currentTime * 1000);
+                    div.querySelector('.message-audio-duration').innerHTML = Format.toTime(audio.currentTime * 1000);
                     inputRange.value = (audio.currentTime * 100) / this.duration;
 
                     if (audio.paused) {
@@ -410,31 +422,22 @@ export class Message extends Model {
                     } else {
                         btnPause.show();
                     }
-
                 }
 
                 audio.onended = e => {
-
                     audio.currentTime = 0;
-
                 }
 
                 btnPlay.on('click', e => {
-
                     audio.play();
-
                 });
 
                 btnPause.on('click', e => {
-
                     audio.pause();
-
                 });
 
                 inputRange.on('change', e => {
-
                     audio.currentTime = (inputRange.value * this.duration) / 100;
-
                 });
 
                 break;
@@ -478,7 +481,6 @@ export class Message extends Model {
         return div;
     }
 
-
     static upload(file, from) {
 
         return new Promise((s, f) => {
@@ -496,37 +498,59 @@ export class Message extends Model {
     static sendImage(chatId, from, file) {
         return new Promise((s, f) => {
             Message.upload(file, from).then(snapshot => {
-                Message.send(
-                    chatId,
-                    from,
-                    'image',
-                    snapshot.downloadURL
-                ).then(() => {
-                    s(); // sucesso da promessa do método send
+                // Message.send(
+                //     chatId,
+                //     from,
+                //     'image',
+                //     snapshot.downloadURL
+                // ).then(() => {
+                //     s(); // sucesso da promessa do método send
+                // });
+                snapshot.ref.getDownloadURL().then(downloadURL => {
+                    Message.send(
+                        chatId,
+                        from,
+                        'image',
+                        downloadURL
+                    ).then(() => {
+                        s();
+                    });
                 });
             });
         });
     }
 
+    static sendContact(chatId, from, contact)
+    {
+        return Message.send(chatId, from, 'contact', contact);
+    }
+
     static sendDocument(chatId, from, file, filePreview, info) {
-        Message.send(chatId, from, 'document').then(msgRef => {
+
+        Message.send(chatId, from, 'document', '').then(msgRef => {
             Message.upload(file, from).then(snapshot => {
-                let downloadFile = snapshot.downloadURL;
-                Message.upload(filePreview, from).then(snapshot2 => {
+                snapshot.ref.getDownloadURL().then(downloadURL => {
+                    let downloadFile = downloadURL;
 
                     if (filePreview) {
-                        let downloadPreview = snapshot2.downloadURL;
-                        msgRef.set({
-                            content: downloadFile,
-                            preview: downloadPreview,
-                            filename: file.name,
-                            size: file.size,
-                            fileType: file.type,
-                            status: 'sent',
-                            info
-                        }, {
-                            merge: true
+                        Message.upload(filePreview, from).then(snapshot2 => {
+                            snapshot2.ref.getDownloadURL().then(downloadURL2 => {
+                                let downloadPreview = downloadURL2;
+
+                                msgRef.set({
+                                    content: downloadFile,
+                                    preview: downloadPreview,
+                                    filename: file.name,
+                                    size: file.size,
+                                    fileType: file.type,
+                                    status: 'sent',
+                                    info
+                                }, {
+                                    merge: true
+                                });
+                            });
                         });
+
                     } else {
                         msgRef.set({
                             content: downloadFile,
@@ -538,12 +562,70 @@ export class Message extends Model {
                             merge: true
                         });
                     }
-
                 });
             });
+
         });
 
     }
+
+    static sendAudio(chatId, from, file, metadata, photo)
+    {
+        return Message.send(chatId, from, 'audio', '').then(msgRef => {
+            Message.upload(file, from).then(snapshot => {
+                snapshot.ref.getDownloadURL().then(downloadURL => {
+                    let downloadFile = downloadURL;
+                    msgRef.set({
+                        content: downloadFile,
+                        size: file.size,
+                        fileType: file.type,
+                        status: 'sent',
+                        photo,
+                        duration: metadata.duration
+                    }, {
+                        merge: true
+                    });
+                });
+            });
+        });
+    }
+
+    // static sendDocument(chatId, from, file, filePreview, info) {
+    //     Message.send(chatId, from, 'document', false).then(msgRef => {
+    //         Message.upload(file, from).then(snapshot => {
+    //             let downloadFile = snapshot.downloadURL;
+    //             Message.upload(filePreview, from).then(snapshot2 => {
+
+    //                 if (filePreview) {
+    //                     let downloadPreview = snapshot2.downloadURL;
+    //                     msgRef.set({
+    //                         content: downloadFile,
+    //                         preview: downloadPreview,
+    //                         filename: file.name,
+    //                         size: file.size,
+    //                         fileType: file.type,
+    //                         status: 'sent',
+    //                         info
+    //                     }, {
+    //                         merge: true
+    //                     });
+    //                 } else {
+    //                     msgRef.set({
+    //                         content: downloadFile,
+    //                         filename: file.name,
+    //                         size: file.size,
+    //                         fileType: file.type,
+    //                         status: 'sent'
+    //                     }, {
+    //                         merge: true
+    //                     });
+    //                 }
+
+    //             });
+    //         });
+    //     });
+
+    // }
 
     static send(chatId, from, type, content) {
         return new Promise((s, f) => {

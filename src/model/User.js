@@ -73,7 +73,7 @@ export class User extends Model {
         //btoa -> converte em base64
         //atob -> faz o inverso
         return User.getContactsRef(this.email)
-            .doc(btoa(contact))
+            .doc(btoa(contact.email))
             .set(contact.toJSON());
 
         // return User.getContactsRef(this.email).doc(contact.email).set(contact.toJSON());
