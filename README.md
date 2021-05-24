@@ -19,7 +19,16 @@
 
 <p align="left">
 This project corresponds WhatsApp Clone. It's possible sending messages in real time, activating the camera, taking pictures, accessing the microphone, recording audio and reading PDF files, all using JavaScript
-</p  >
+</p>
+
+<p align="center">
+ <img width="80%" src="https://github.com/camilacoutodeoliveira/project-whatsapp-clone/blob/main/img/img04.jpg">
+ <img width="80%" src="https://github.com/camilacoutodeoliveira/project-whatsapp-clone/blob/main/img/img05.jpg">
+ <img width="80%" src="https://github.com/camilacoutodeoliveira/project-whatsapp-clone/blob/main/img/img00.jpg">
+ <img width="80%" src="https://github.com/camilacoutodeoliveira/project-whatsapp-clone/blob/main/img/img03.jpg">
+ <img width="80%" src="https://github.com/camilacoutodeoliveira/project-whatsapp-clone/blob/main/img/img01.jpg">
+ <img width="80%" src="https://github.com/camilacoutodeoliveira/project-whatsapp-clone/blob/main/img/img02.jpg">
+</p>
  
  ### ⚙️ Installation | Resources
 
