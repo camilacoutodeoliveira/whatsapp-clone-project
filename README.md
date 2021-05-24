@@ -51,7 +51,7 @@ npm install pdfjs-dist@2.0.489 --save
 npm install firebase@ --save
 ```
 
-Lesson 159, required upgrade firebase
+*Lesson 159, required upgrade firebase
 
 ```
 npm install -g firebase-tools
