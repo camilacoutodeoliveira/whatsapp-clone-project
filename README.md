@@ -26,7 +26,6 @@ Lista de recursos usados em aula para este projeto
 
 Install
 
-//guardar dependencias dos modulos
 npm init 
 
 npm install webpack@3.1.0 --save
