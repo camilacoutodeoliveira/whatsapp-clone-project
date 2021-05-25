@@ -3,7 +3,7 @@
  <img width="50%" src="https://github.com/camilacoutodeoliveira/project-whatsapp-clone/blob/main/img/work_chat.svg">
  <br>
 </h1>
-<h1 align="center">WhatsApp Clone - Project - JS</h1><br>
+<h1 align="center">WhatsApp Clone - JS</h1><br>
 <p align="center">
  <img alt="JavaScript" src="https://img.shields.io/badge/javascript-%23323330.svg?&style=for-the-badge&logo=javascript&logoColor=%23F7DF1E"/>
  <img alt="Firebase" src="https://img.shields.io/badge/firebase-%23039BE5.svg?&style=for-the-badge&logo=firebase"/> 
